@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Snapchat",
+        "link": "https://www.snapchat.com/add/packetrate",
+        "user": "snapchat/packetrate"
+    },
+    {
+        "name": "Twitter",
+        "link": "https://twitter.com/real_clomby",
+        "user": "twitter/real_clomby"
+    },
+    {
+        "name": "Steam",
+        "link": "https://steamcommunity.com/id/clomby",
+        "user": "steamcommunity/clomby"
+    },
+    {
+        "name": "Youtube",
+        "link": "https://www.youtube.com/channel/UCmwFfV6SgR-xdDjLePjW6OQ",
+        "user": "youtube/clomby"
+    }
+]

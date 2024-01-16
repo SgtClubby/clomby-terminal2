@@ -1,0 +1,45 @@
+[
+    {
+      "name": "help",
+      "component": "Help",
+      "description": "Show this help message.",
+      "type": "command"
+    },
+    {
+      "name": "socials",
+      "component": "Socials",
+      "description": "List of my social networks.",
+      "type": "command"
+    },
+    {
+      "name": "banner",
+      "component": "Banner",
+      "description": "Display the sites banner.",
+      "type": "command"
+    },
+    {
+      "name": "github",
+      "component": "Github",
+      "description": "Get URL to my Github page",
+      "type": "command"
+    },
+    {
+        "name": "clear",
+        "component": "Message",
+        "description": "Clears terminal",
+        "type": "command"
+    },
+    {
+      "name": "sudo",
+      "component": "Sudo",
+      "description": "",
+      "type": "command"
+  },
+      {
+        "name": "the answer to life, the universe and everything",
+        "component": "Message",
+        "description": "42",
+        "type": "easteregg"
+    }
+
+  ]

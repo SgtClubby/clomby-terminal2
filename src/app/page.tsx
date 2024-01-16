@@ -1,113 +1,185 @@
-import Image from 'next/image'
+"use client"
+
+import { useState, useRef, useEffect } from "react";
+import Banner from "@/components/Banner";
+import Invalid from "@/components/Invalid";
+import { useTypingEffect } from "../hooks/useTypingEffect";
+import type { Command, CommandConfig } from "../types";
+import commandArray from '../config/commands.json'
+import Sudo from "@/components/Sudo";
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  const [history, setHistory] = useState<string[]>([]);
+  const [clearedEcho, setClearedEcho] = useState(false);
+  const [previousCommands, setPreviousCommands] = useState<{ type: any; command: string; message: string; }[]>([]);
+  const [commandValue, setCommandValue] = useState("");
+  const [dimCursor, setDimCursor] = useState(false);
+  const [displayedCommand, setDisplayedCommand] = useState("");
+  const [autoScrollActive, setAutoScrollActive] = useState(true);
+  const [isSudoMode, setIsSudoMode] = useState(false);
+  const [sudoPassword, setSudoPassword] = useState('');
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+  const inputRef = useRef<HTMLInputElement>(null);
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+  useEffect(() => {
+    if (autoScrollActive) {
+      const timerinit = setTimeout(() => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 125); // Adjust time as needed
+      const timerFollowup = setTimeout(() => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 1500); // Adjust time as needed
+      return () => {
+        clearTimeout(timerinit);
+        clearTimeout(timerFollowup);
+      }
+    }
+  }, [previousCommands, autoScrollActive]);
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+  useEffect(() => {
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement; // Cast to HTMLElement
+      if (target.scrollTop < target.scrollHeight - target.clientHeight - 10) {
+        setAutoScrollActive(false);
+      }
+    };
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+    const terminalContainer: HTMLDivElement = document.querySelector('.terminal-container')!; // Change to your terminal container selector
+    terminalContainer.addEventListener('scroll', handleScroll);
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    return () => terminalContainer.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (commandValue !== displayedCommand) {
+      if (displayedCommand.length < commandValue.length) {
+        const nextChar = commandValue[displayedCommand.length];
+        const timeoutId = setTimeout(() => {
+          setDisplayedCommand(displayedCommand + nextChar);
+        }, 50);
+        return () => clearTimeout(timeoutId);
+      } else {
+        setDisplayedCommand(commandValue);
+      }
+    }
+  }, [commandValue, displayedCommand]);
+
+  function commandSubmit(key: string, command: string) {
+    if (key === "Enter") {
+      setHistory([...history, command]);
+      handleCommand(command);
+      setCommandValue("");
+      setAutoScrollActive(true);
+    }
+  }
+
+  const commandConfig: CommandConfig = commandArray.reduce(
+    (acc: CommandConfig, cmd: Command) => {
+      acc[cmd.name] = cmd.component;
+      return acc;
+    },
+    {}
+  );
+
+  const handleSudoSubmit = () => {
+    setIsSudoMode(false); // For simplicity, accept any input as valid
+    // You can add additional actions to perform after 'sudo' authentication
+  };
+
+  async function handleCommand(command: string) {
+    try {
+    const cmd = command.toLowerCase();
+    if (cmd in commandConfig) {
+      if (cmd === 'clear') {
+        console.log("Clear")
+        setClearedEcho(true);
+        setPreviousCommands([]);
+      } else if (cmd === 'sudo') {
+        
+        setIsSudoMode(true);
+        console.log(isSudoMode)
+        setPreviousCommands([...previousCommands, { type: Sudo, command: "", message: "" }]);
+      } else {
+        
+          const ComponentName = commandConfig[cmd];
+          const ComponentModule = await import(`../components/${ComponentName}`);
+          const Component = ComponentModule.default;
+
+          const commandObj = commandArray.find(c => c.name === cmd);
+          const description = commandObj ? commandObj.description : "";
+
+          if (ComponentName === "Message") {
+            setPreviousCommands([...previousCommands, { type: Component, command: cmd, message: description }]);
+          } else {
+            setPreviousCommands([...previousCommands, { type: Component, command: cmd, message: "" }]);
+          }
+   
+      }
+    } else {
+      setPreviousCommands([...previousCommands, { type: Invalid, command: cmd, message: "" }]);
+    }
+  } catch (error) {
+    console.error("Error loading component:", error);
+    // Handle the error appropriately
+  }
 }
+
+  function focusInput() {
+    inputRef.current?.focus();
+  }
+
+  return (
+    <div className="flex w-full h-full terminal-container">
+      <div className="p-5 mx-auto my-auto h-full w-full">
+        <div>
+          {!clearedEcho && (
+            <Banner hideEcho={true} handleCommand={handleCommand} />
+          )}
+          <div className="">
+            {previousCommands.map((item, index) => {
+              const Component = item.type;
+              const message = item.message;
+              const command = item.command;
+              return <Component key={index} command={command} message={message} />;
+          })}
+          <div ref={endOfMessagesRef} />
+        </div>
+        <div className="terminal-input-container">
+          { !isSudoMode && (
+            <>
+              <button className="absolute h-[1.2rem] w-[50%]" onClick={focusInput} />
+              <p className="terminal-user">{useTypingEffect("user@clom.by:~$", 25, 1300)}</p>
+              <div className="terminal-command text-primary relative">{displayedCommand}</div>
+              <div className={classNames(
+                dimCursor ? "animate-terminal-blink-dim" : "animate-terminal-blink", "terminal-cursor"
+              )} />
+            </>
+          )}
+        </div>
+        <input 
+          onFocus={() => setDimCursor(false)}
+          onBlur={() => setDimCursor(true)}
+          autoComplete="off" 
+          autoFocus={true} 
+          name="terminal-input" 
+          value={commandValue}
+          onChange={(e) => setCommandValue(e.target.value)}
+          onKeyDown={(e) => commandSubmit(e.code, commandValue)}
+          ref={inputRef} 
+          className="terminal-input"
+        />               
+      </div>
+    </div>
+  </div>
+)
+}
+
