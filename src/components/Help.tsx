@@ -18,7 +18,10 @@ function Help({state, command}: { state: any, command: string }) {
             </div>
             <div className="ml-10 flex flex-col text-white">
                {commandConfig.map((command, i) => {
-                if (command.type != 'command') return;
+                if (command.type != 'command') {
+                    i = i - 1;
+                    return
+                };
 
                 return (
                     <p key={i} className="text-white">
