@@ -1,21 +1,27 @@
 import TypingText from './Type';
 import socialsConfig from '../config/socials.json';
-function Socials({ command }) {
+import classNames from '@/hooks/classNames';
 
-
+function Socials({ command, state }: { command: string, state: any }) {
+    
   return (
     <div className="flex flex-col text-white">
         <div>
-            <p className="text-white">
-                <span className="text-primary">user@clom.by:~$ socials</span>
-            </p>
+        <p className={
+                classNames(
+                    state.isSudoMode ? "text-red-400" : "text-primary",
+                    "terminal-user"
+                )}
+              >
+                {state.user}@clom.by:~$ {command}
+              </p>
         </div>
         <div className="ml-10 flex flex-col text-white">
             {socialsConfig.map((social, i) => {
-              const { name, user, url } = social;
+              const { name, user, link } = social;
               return (
                 <p key={i} className="text-white">
-                    <a href={url} target="_blank" rel="noreferrer">
+                    <a href={link} target="_blank" rel="noreferrer">
                         <span className="font-bold text-tooltip">
                             <TypingText speed={15} delay={i * 200}>
                                 {name}

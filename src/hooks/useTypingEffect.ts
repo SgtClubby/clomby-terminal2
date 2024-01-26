@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
 // Custom hook for typing effect with initial delay
-export function useTypingEffect(text, speed = 15, delay = 0) {
+export function useTypingEffect(text: string, speed = 15, delay = 0) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
-    let typingTimeout;
+    let typingTimeout: NodeJS.Timeout;
 
     // Initial delay before typing starts
     const delayTimeout = setTimeout(() => {

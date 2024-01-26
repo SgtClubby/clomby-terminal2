@@ -1,15 +1,20 @@
 import commandConfig from '../config/commands.json';
 import { useTypingEffect } from '../hooks/useTypingEffect';
 import TypingText from './Type';
-
-function Help() {
+import classNames from '@/hooks/classNames';
+function Help({state, command}: { state: any, command: string }) {
 
     return (
         <div className="flex flex-col text-white">
             <div>
-                <p className="text-white">
-                    <span className="text-primary">user@clom.by:~$ help</span>
-                </p>
+            <p className={
+                classNames(
+                    state.isSudoMode ? "text-red-400" : "text-primary",
+                    "terminal-user"
+                )}
+              >
+                {state.user}@clom.by:~$ {command}
+              </p>
             </div>
             <div className="ml-10 flex flex-col text-white">
                {commandConfig.map((command, i) => {

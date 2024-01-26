@@ -32,3 +32,28 @@ html {
     }
 
 }
+
+
+@keyframes combinedHueAndPulseAndRotation {
+    0%, 100% { 
+        transform: scale(1) rotate(0deg); 
+        filter: hue-rotate(0deg);
+    }
+    15% { 
+        transform: scale(1.025) rotate(2deg); 
+    }
+    35% { 
+        transform: scale(1) rotate(0deg); 
+        filter: hue-rotate(180deg);
+    }
+    55% { 
+        transform: scale(1.025) rotate(-2deg); 
+    }
+    75%{
+        filter: hue-rotate(360deg);
+    }
+  }
+  
+.psychedelic {
+    animation: combinedHueAndPulseAndRotation 9s cubic-bezier(0.645, 0.045, 0.355, 1) infinite alternate;
+}

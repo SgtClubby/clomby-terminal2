@@ -1,45 +1,98 @@
 [
-    {
-      "name": "help",
-      "component": "Help",
-      "description": "Show this help message.",
-      "type": "command"
-    },
-    {
-      "name": "socials",
-      "component": "Socials",
-      "description": "List of my social networks.",
-      "type": "command"
-    },
-    {
-      "name": "banner",
-      "component": "Banner",
-      "description": "Display the sites banner.",
-      "type": "command"
-    },
-    {
-      "name": "github",
-      "component": "Github",
-      "description": "Get URL to my Github page",
-      "type": "command"
-    },
-    {
-        "name": "clear",
-        "component": "Message",
-        "description": "Clears terminal",
-        "type": "command"
-    },
-    {
-      "name": "sudo",
-      "component": "Sudo",
-      "description": "",
-      "type": "command"
+  {
+    "name": "help",
+    "component": "Help",
+    "description": "Show this help message.",
+    "type": "command"
   },
-      {
-        "name": "the answer to life, the universe and everything",
-        "component": "Message",
-        "description": "42",
-        "type": "easteregg"
-    }
-
-  ]
+  {
+    "name": "socials",
+    "component": "Socials",
+    "description": "List of my social networks.",
+    "type": "command"
+  },
+  {
+    "name": "banner",
+    "component": "Banner",
+    "description": "Display the sites banner.",
+    "type": "command"
+  },
+  {
+    "name": "github",
+    "component": "Github",
+    "description": "Get URL to my Github page",
+    "type": "command"
+  },
+  {
+    "name": "clear",
+    "component": "Message",
+    "description": "Clears terminal",
+    "type": "command"
+  },
+  {
+    "name": "sudo",
+    "component": "Sudo",
+    "description": "",
+    "type": "hidden"
+  },
+  {
+    "name": "the answer to life, the universe and everything",
+    "component": "Message",
+    "description": "42",
+    "type": "hidden"
+  },
+  {
+    "name": "42",
+    "component": "Message",
+    "description": "You know it",
+    "type": "hidden"
+  },
+  {
+    "name": "ls",
+    "component": "LSOutput",
+    "description": "List files",
+    "type": "command"
+  },
+  {
+    "name": "ls -la",
+    "component": "LSOutput",
+    "description": "List files",
+    "type": "hidden"
+  },
+  {
+    "name": "cd",
+    "component": "Message",
+    "description": "Change directory",
+    "type": "command"
+  },
+  {
+    "name": "cd cat_videos",
+    "component": "Message",
+    "description": "bash: cd: cat_videos: Input/output error",
+    "type": "hidden"
+  },
+  {
+    "name": "cat",
+    "component": "Message",
+    "description": "Read file contents",
+    "type": "command"
+  },
+  {
+    "name": "cat system.log",
+    "component": "Message",
+    "description": "",
+    "type": "hidden"
+  },
+  {
+    "name": "cat code.js",
+    "component": "Message",
+    "description": "",
+    "type": "hidden"
+  },
+  {
+    "name": "./psilocy.bin",
+    "component": "",
+    "description": "",
+    "type": "hidden"
+  }
+]

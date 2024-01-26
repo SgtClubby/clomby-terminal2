@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-const TypingText = ({ children, speed = 50, delay = 0 }) => {
+const TypingText = ({ children, speed = 50, delay = 0 }: { children: string | string[], speed?: number, delay?: number }) => {
   const [content, setContent] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     const text = children instanceof Array ? children.join('') : children;
-    let typingTimeout;
+    let typingTimeout: NodeJS.Timeout;
 
     // Start typing effect after delay
     const delayTimeout = setTimeout(() => {

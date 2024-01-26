@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTypingEffect } from '../hooks/useTypingEffect';
+import classNames from '@/hooks/classNames';
 
-function Banner({ hideEcho, handleCommand }) {
+function Banner({ command, hideEcho, handleCommand, state }: { command: string, hideEcho: boolean, handleCommand: (command: string) => void, state: any }) {
     const bannerArt = [
         '     ______     __                       __',
         '    / ____/     / /  ____    ____ ___      / /_    __    __',
@@ -19,8 +20,13 @@ function Banner({ hideEcho, handleCommand }) {
         <div className="text-white">
           <div>
             {!hideEcho && (
-              <p className="text-white">
-                <span className="text-primary">user@clom.by:~$ banner</span>
+              <p className={
+                classNames(
+                    state.isSudoMode ? "text-red-400" : "text-primary",
+                    "terminal-user"
+                )}
+              >
+                {state.user}@clom.by:~$ {command}
               </p>
             )}
           </div>
