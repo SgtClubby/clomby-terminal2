@@ -51,6 +51,7 @@ function Sudo({ command, message, state }: { command: string, message: string, s
             {attempts.length < 3 && (
                 <div className="ml-10 flex flex-row text-white">
                     <p>[sudo] password for {state.user}: </p>
+                    <button className="absolute h-[1.2rem] w-[50%]" onClick={() => inputRef.current?.focus()} />
                     <input 
                         placeholder=''
                         type="password"
