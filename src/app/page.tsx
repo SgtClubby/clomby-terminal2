@@ -130,6 +130,16 @@ export default function Home() {
         }
         return
       } 
+
+      if (cmd === 'sudo su') {
+        if (!isSudoMode) {
+          setSudoMenu(true);
+          setPreviousCommands([...previousCommands, { type: Sudo, command: "", message: "", state: { setPassword, setSudo, setIsSudo, isSudoMode, sudoPassword, sudoMenu, user: currentUser } }]);
+        } else {
+          setPreviousCommands([...previousCommands, { type: Message, command: cmd, message: "", state: { isSudoMode: isSudo, user: currentUser }}]);
+        }
+        return
+      } 
     
       if (cmd === 'cd') {
         if (cmd.includes("cat_videos")) {
