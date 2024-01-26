@@ -15,7 +15,7 @@ function Invalid({ command, state }: { command: string, state: any }) {
         </div>
         <div className="ml-10 flex flex-col text-white">
             <p className="text-primary">
-                <span className="text-secondary">bash: {command}: command not found. Use 'help' for a list of commands.</span>
+                <span className="text-secondary">bash: {command}: command not found.</span>
             </p>
         </div>
     </div>

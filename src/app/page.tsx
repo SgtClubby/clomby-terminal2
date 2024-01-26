@@ -141,6 +141,10 @@ export default function Home() {
       }
 
       if(cmd == "./psilocy.bin") {
+        if (!isSudoMode) {
+          setPreviousCommands([...previousCommands, { type: Message, command: cmd, message: "bash: ./psilocy.bin: Permission denied", state: { isSudoMode: isSudo, user: currentUser }}]);
+          return
+        }
         setPsychedelic(true);
         setPreviousCommands([...previousCommands, { type: Message, command: cmd, message: "The world fills with mirages...", state: { isSudoMode: isSudo, user: currentUser }}]);
         return

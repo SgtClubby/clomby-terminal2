@@ -11,13 +11,9 @@ function LSOutput({ state, command }: { state: any, command: string }) {
   
     // Mock file system entries
     const files = [
-      { name: 'adventure_plan.txt', type: 'file' },
+      { name: 'system.log', type: 'file' },
       { name: 'cat_videos', type: 'directory' },
-      { name: 'mystery_code.js', type: 'file' },
-      { name: 'secret_formula.pdf', type: 'file' },
-      { name: 'treasure_map.jpg', type: 'image' },
-      { name: '.hidden_diary.txt', type: 'hidden-file' },
-      { name: '.unlock_treasure', type: 'hidden-file' },
+      { name: 'code.js', type: 'file' },
       { name: 'psilocy.bin', type: 'executable' },
     ];
   
