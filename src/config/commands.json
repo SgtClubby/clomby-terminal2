@@ -39,7 +39,7 @@
     "name": "sudo su",
     "component": "Sudo",
     "description": "",
-    "type": "command"
+    "type": "hidden"
   },
   {
     "name": "the answer to life, the universe and everything",
